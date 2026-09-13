@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="ko" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>노다솔 | QA Engineer Portfolio</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'Noto Sans KR', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        body {
+            font-family: 'Inter', 'Noto Sans KR', sans-serif;
+        }
+
+        /* 스크롤 애니메이션 클래스 */
+        .fade-in-section {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+            will-change: opacity, visibility;
+        }
+        
+        .fade-in-section.is-visible {
+            opacity: 1;
+            transform: none;
+        }
+
+        /* 커스텀 스크롤바 */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        .dark ::-webkit-scrollbar-thumb { background: #475569; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        .dark ::-webkit-scrollbar-thumb:hover { background: #64748b; }
+        
+        /* 인쇄(PDF 저장) 최적화 CSS */
+        @media print {
+            .no-print { display: none !important; }
+            html, body { 
+                background-color: white !important; 
+                color: #0f172a !important; 
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            /* 인쇄 시 다크모드 무효화 */
+            .dark section { background-color: white !important; color: #0f172a !important; }
+            .dark .text-slate-400 { color: #64748b !important; }
+            .dark .bg-slate-800 { background-color: #f8fafc !important; }
+            .dark .text-white { color: #0f172a !important; }
+            .dark .border-slate-700 { border-color: #e2e8f0 !important; }
+            .dark .bg-slate-900 { background-color: #ffffff !important; }
+            
+            .fade-in-section {
+                opacity: 1 !important;
+                transform: none !important;
+                transition: none !important;
+            }
+            @page { margin: 1cm; }
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900 dark:bg-slate-900 dark:text-slate-100 antialiased selection:bg-blue-200 selection:text-blue-900 transition-colors duration-300">
+
+    <!-- Navbar -->
+    <nav class="fixed w-full bg-white/80 dark:bg-slate-900/80 backdrop-blur-md z-40 border-b border-slate-200 dark:border-slate-800 shadow-sm transition-colors duration-300 no-print">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- 로고 영역: 5번 클릭 시 PDF 버튼 나타나는 이스터에그 -->
+                <div class="flex-shrink-0 font-bold text-xl tracking-tight text-blue-600 dark:text-blue-400 cursor-pointer select-none" onclick="handleEasterEgg()">
+                    노다솔 포트폴리오
+                </div>
+                
+                <div class="flex items-center gap-6">
+                    <div class="hidden md:flex items-baseline space-x-8 text-sm font-medium text-slate-600 dark:text-slate-300">
+                        <a href="#profile" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Profile</a>
+                        <a href="#skills" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Skills</a>
+                        <a href="#experience" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Experience</a>
+                        <a href="#highlight" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Highlight</a>
+                        <a href="#growth" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Growth</a>
+                    </div>
+                    
+                    <!-- 테마 토글 버튼 -->
+                    <button onclick="toggleDarkMode()" class="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors" aria-label="Toggle Dark Mode">
+                        <i class="fa-solid fa-moon dark:hidden"></i>
+                        <i class="fa-solid fa-sun hidden dark:block"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="pt-16">
+        <!-- Hero Section -->
+        <section id="hero" class="relative pt-24 pb-20 lg:pt-36 lg:pb-32 overflow-hidden bg-slate-100 dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800">
+            <div class="absolute inset-0 z-0 opacity-20 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-blue-400 via-transparent to-transparent"></div>
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 fade-in-section flex flex-col md:flex-row items-center gap-10">
+                
+                <!-- 텍스트 영역 -->
+                <div class="flex-1 text-center md:text-left">
+                    <p class="text-blue-600 dark:text-blue-400 font-medium tracking-wide mb-4">안녕하세요.</p>
+                    <h1 class="text-4xl md:text-5xl lg:text-5xl font-bold leading-tight mb-6 text-slate-900 dark:text-white">
+                        데이터의 흐름을 꿰뚫어<br/>서비스의 신뢰를 지키는
+                    </h1>
+                    <p class="text-2xl text-slate-600 dark:text-slate-300 font-light mb-8">
+                        <span class="font-semibold text-slate-900 dark:text-white">QA 엔지니어</span> 노다솔
+                    </p>
+                    
+                    <div class="flex flex-col sm:flex-row gap-4 sm:gap-8 justify-center md:justify-start text-slate-600 dark:text-slate-400">
+                        <div class="flex items-center justify-center gap-2 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                            <i class="fa-solid fa-envelope"></i>
+                            <a href="mailto:ds.no.qa@gmail.com">ds.no.qa@gmail.com</a>
+                        </div>
+                        <div class="flex items-center justify-center gap-2 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                            <i class="fa-solid fa-phone"></i>
+                            <span>+82 10-9798-0330</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 프로필 사진 영역 -->
+                <div class="shrink-0">
+                    <div class="w-48 h-48 md:w-56 md:h-56 rounded-full overflow-hidden border-4 border-white dark:border-slate-700 shadow-xl bg-slate-200 dark:bg-slate-800 flex items-center justify-center">
+                        <!-- 실제 사진 경로로 src를 변경하세요 -->
+                        <img src="./profile.jpg" alt="노다솔 프로필 사진" class="w-full h-full object-cover">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Profile Section -->
+        <section id="profile" class="py-20 bg-white dark:bg-slate-800/50">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 fade-in-section">
+                <div class="flex items-center gap-3 mb-10">
+                    <div class="h-8 w-1 bg-blue-600 dark:bg-blue-500 rounded"></div>
+                    <h2 class="text-3xl font-bold text-slate-900 dark:text-white">Profile</h2>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 bg-slate-50 dark:bg-slate-800/80 p-8 md:p-10 rounded-2xl border border-slate-100 dark:border-slate-700">
+                    <!-- 학력 -->
+                    <div>
+                        <h3 class="text-lg font-bold text-slate-800 dark:text-white mb-6 flex items-center gap-2">
+                            <i class="fa-solid fa-graduation-cap text-blue-600 dark:text-blue-400"></i> 학력 (Education)
+                        </h3>
+                        <div class="space-y-4">
+                            <!-- 항목 1 -->
+                            <div class="flex border-l-2 border-blue-200 dark:border-blue-700 pl-4 py-1">
+                                <div class="w-24 text-slate-500 dark:text-slate-400 font-medium shrink-0">2012</div>
+                                <div class="text-slate-800 dark:text-slate-200">고척고등학교 졸업</div>
+                            </div>
+                            <!-- 항목 2 -->
+                            <div class="flex border-l-2 border-blue-200 dark:border-blue-700 pl-4 py-1">
+                                <div class="w-24 text-slate-500 dark:text-slate-400 font-medium shrink-0">2018</div>
+                                <div class="text-slate-800 dark:text-slate-200">인천재능대학교 컴퓨터정보과 전문학사 졸업</div>
+                            </div>
+                            <!-- 항목 3 -->
+                            <div class="flex border-l-2 border-blue-200 dark:border-blue-700 pl-4 py-1">
+                                <div class="w-24 text-slate-500 dark:text-slate-400 font-medium shrink-0">2025</div>
+                                <div class="text-slate-800 dark:text-slate-200">한국방송통신대학교 컴퓨터과학과 학사 졸업</div>
+                            </div>
+                            <!-- 학력 추가 시 이 위치에 위 div 구조를 복사하여 추가하세요 -->
+                        </div>
+                    </div>
+
+                    <!-- 자격증 및 정보 -->
+                    <div>
+                        <h3 class="text-lg font-bold text-slate-800 dark:text-white mb-6 flex items-center gap-2">
+                            <i class="fa-solid fa-id-card-clip text-blue-600 dark:text-blue-400"></i> 기본정보 및 자격증
+                        </h3>
+                        <div class="space-y-4">
+                            <div class="flex border-l-2 border-blue-200 dark:border-blue-700 pl-4 py-1">
+                                <div class="w-24 text-slate-500 dark:text-slate-400 font-medium shrink-0">생년월일</div>
+                                <div class="text-slate-800 dark:text-slate-200">1994.01.12</div>
+                            </div>
+                            <div class="flex border-l-2 border-blue-200 dark:border-blue-700 pl-4 py-1">
+                                <div class="w-24 text-slate-500 dark:text-slate-400 font-medium shrink-0">2022.04</div>
+                                <div class="text-slate-800 dark:text-slate-200">ISTQB CTFL</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Skills Section -->
+        <section id="skills" class="py-20 bg-slate-50 dark:bg-slate-900">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 fade-in-section">
+                <div class="flex items-center gap-3 mb-10">
+                    <div class="h-8 w-1 bg-blue-600 dark:bg-blue-500 rounded"></div>
+                    <h2 class="text-3xl font-bold text-slate-900 dark:text-white">Skills</h2>
+                </div>
+                
+                <div class="bg-white dark:bg-slate-800 p-8 md:p-10 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700">
+                    
+                    <!-- 핵심 역량 -->
+                    <div class="mb-8">
+                        <h3 class="text-md font-semibold text-slate-600 dark:text-slate-300 mb-4">QA 핵심 역량</h3>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-4 py-2 rounded-full border bg-blue-50 text-blue-800 border-blue-200 dark:bg-blue-900/30 dark:text-blue-300 dark:border-blue-800 text-sm font-medium">테스트디자인</span>
+                            <span class="px-4 py-2 rounded-full border bg-blue-50 text-blue-800 border-blue-200 dark:bg-blue-900/30 dark:text-blue-300 dark:border-blue-800 text-sm font-medium">테스트기법</span>
+                            <span class="px-4 py-2 rounded-full border bg-blue-50 text-blue-800 border-blue-200 dark:bg-blue-900/30 dark:text-blue-300 dark:border-blue-800 text-sm font-medium">TC/시나리오 설계</span>
+                        </div>
+                    </div>
+
+                    <!-- 자동화 및 기술 -->
+                    <div class="mb-8">
+                        <h3 class="text-md font-semibold text-slate-600 dark:text-slate-300 mb-4">기술 및 환경</h3>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-4 py-2 rounded-full border bg-indigo-50 text-indigo-800 border-indigo-200 dark:bg-indigo-900/30 dark:text-indigo-300 dark:border-indigo-800 text-sm font-medium">테스트 자동화</span>
+                            <span class="px-4 py-2 rounded-full border bg-indigo-50 text-indigo-800 border-indigo-200 dark:bg-indigo-900/30 dark:text-indigo-300 dark:border-indigo-800 text-sm font-medium">Python</span>
+                            <span class="px-4 py-2 rounded-full border bg-indigo-50 text-indigo-800 border-indigo-200 dark:bg-indigo-900/30 dark:text-indigo-300 dark:border-indigo-800 text-sm font-medium">Pytest기반 프레임워크</span>
+                            <span class="px-4 py-2 rounded-full border bg-indigo-50 text-indigo-800 border-indigo-200 dark:bg-indigo-900/30 dark:text-indigo-300 dark:border-indigo-800 text-sm font-medium">API 검증</span>
+                            <span class="px-4 py-2 rounded-full border bg-indigo-50 text-indigo-800 border-indigo-200 dark:bg-indigo-900/30 dark:text-indigo-300 dark:border-indigo-800 text-sm font-medium">Swagger/Network 분석</span>
+                            <span class="px-4 py-2 rounded-full border bg-indigo-50 text-indigo-800 border-indigo-200 dark:bg-indigo-900/30 dark:text-indigo-300 dark:border-indigo-800 text-sm font-medium">Web/MW/App</span>
+                            <span class="px-4 py-2 rounded-full border bg-indigo-50 text-indigo-800 border-indigo-200 dark:bg-indigo-900/30 dark:text-indigo-300 dark:border-indigo-800 text-sm font-medium">API/WebSocket</span>
+                        </div>
+                    </div>
+
+                    <!-- 도메인 및 툴 -->
+                    <div>
+                        <h3 class="text-md font-semibold text-slate-600 dark:text-slate-300 mb-4">도메인 및 협업툴</h3>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-4 py-2 rounded-full border bg-slate-100 text-slate-800 border-slate-200 dark:bg-slate-700 dark:text-slate-200 dark:border-slate-600 text-sm font-medium">FinTech/거래소</span>
+                            <span class="px-4 py-2 rounded-full border bg-slate-100 text-slate-800 border-slate-200 dark:bg-slate-700 dark:text-slate-200 dark:border-slate-600 text-sm font-medium">Embedded SW</span>
+                            <span class="px-4 py-2 rounded-full border bg-slate-100 text-slate-800 border-slate-200 dark:bg-slate-700 dark:text-slate-200 dark:border-slate-600 text-sm font-medium">Jira</span>
+                            <span class="px-4 py-2 rounded-full border bg-slate-100 text-slate-800 border-slate-200 dark:bg-slate-700 dark:text-slate-200 dark:border-slate-600 text-sm font-medium">Slack</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Experience Section -->
+        <section id="experience" class="py-20 bg-white dark:bg-slate-800/50">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 fade-in-section">
+                <div class="flex items-center gap-3 mb-10">
+                    <div class="h-8 w-1 bg-blue-600 dark:bg-blue-500 rounded"></div>
+                    <h2 class="text-3xl font-bold text-slate-900 dark:text-white">Experience</h2>
+                </div>
+                
+                <!-- 회사 블록 -->
+                <div class="mb-12">
+                    <div class="mb-6 flex flex-col md:flex-row md:items-baseline md:justify-between border-b border-slate-200 dark:border-slate-700 pb-4">
+                        <h3 class="text-2xl font-bold text-slate-900 dark:text-white">두루에너아이 주식회사</h3>
+                        <div class="text-slate-500 dark:text-slate-400 font-medium mt-2 md:mt-0">QA 엔지니어 / 주임 연구원 <span class="mx-2 text-slate-300 dark:text-slate-600">|</span> 2019.05 ~ 현재</div>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        
+                        <!-- 프로젝트 1 -->
+                        <div class="bg-white dark:bg-slate-800 p-6 rounded-xl border border-slate-200 dark:border-slate-700 hover:border-blue-400 dark:hover:border-blue-500 transition-colors flex flex-col">
+                            <div class="text-xs font-bold text-blue-600 dark:text-blue-400 mb-2 uppercase tracking-wider">빗썸</div>
+                            <h4 class="text-lg font-bold text-slate-800 dark:text-white mb-2 leading-tight">전자금융 및 거래 시스템 품질관리</h4>
+                            <div class="text-xs text-slate-500 dark:text-slate-400 mb-4">전체 플랫폼 신뢰성 검증</div>
+                            <ul class="text-sm text-slate-600 dark:text-slate-300 mb-6 space-y-2 flex-grow">
+                                <li>• 차익거래 서비스 품질 검증 (2024.01~03)</li>
+                                <li>• OPEN API 품질 검증 (2024.05~07)</li>
+                                <li>• 코인대여 서비스 검증 (2025.06~진행중)</li>
+                                <li>• 출금 수수료 및 정책 변경 검증</li>
+                            </ul>
+                            <div class="flex flex-wrap gap-1 mt-auto">
+                                <span class="px-2 py-1 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 rounded text-xs">프로젝트 리더</span>
+                                <span class="px-2 py-1 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 rounded text-xs">테스트 체계 정립</span>
+                                <span class="px-2 py-1 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 rounded text-xs">자동화</span>
+                            </div>
+                        </div>
+
+                        <!-- 프로젝트 2 -->
+                        <div class="bg-white dark:bg-slate-800 p-6 rounded-xl border border-slate-200 dark:border-slate-700 hover:border-blue-400 dark:hover:border-blue-500 transition-colors flex flex-col">
+                            <div class="text-xs font-bold text-blue-600 dark:text-blue-400 mb-2 uppercase tracking-wider">SK Telecom</div>
+                            <h4 class="text-lg font-bold text-slate-800 dark:text-white mb-2 leading-tight">ASUM B2B기반 광고 플랫폼</h4>
+                            <div class="text-xs text-slate-500 dark:text-slate-400 mb-4">2023.09 ~ 2023.12</div>
+                            <ul class="text-sm text-slate-600 dark:text-slate-300 mb-6 space-y-2 flex-grow">
+                                <li>• 광고 플랫폼 API 연계 검증</li>
+                                <li>• 케이스 작성 및 검수</li>
+                            </ul>
+                            <div class="flex flex-wrap gap-1 mt-auto">
+                                <span class="px-2 py-1 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 rounded text-xs">논리적 사고</span>
+                                <span class="px-2 py-1 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 rounded text-xs">통합 흐름 분석</span>
+                                <span class="px-2 py-1 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 rounded text-xs">API 검수</span>
+                            </div>
+                        </div>
+
+                        <!-- 프로젝트 3 -->
+                        <div class="bg-white dark:bg-slate-800 p-6 rounded-xl border border-slate-200 dark:border-slate-700 hover:border-blue-400 dark:hover:border-blue-500 transition-colors flex flex-col">
+                            <div class="text-xs font-bold text-blue-600 dark:text-blue-400 mb-2 uppercase tracking-wider">LG전자</div>
+                            <h4 class="text-lg font-bold text-slate-800 dark:text-white mb-2 leading-tight">Embedded SW QA</h4>
+                            <div class="text-xs text-slate-500 dark:text-slate-400 mb-4">2019.05 ~ 2023.06</div>
+                            <ul class="text-sm text-slate-600 dark:text-slate-300 mb-6 space-y-2 flex-grow">
+                                <li>• TV SW 결함 포착</li>
+                                <li>• 메뉴얼 및 안정성 검수</li>
+                            </ul>
+                            <div class="flex flex-wrap gap-1 mt-auto">
+                                <span class="px-2 py-1 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 rounded text-xs">QA기본기</span>
+                                <span class="px-2 py-1 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 rounded text-xs">협업능력</span>
+                                <span class="px-2 py-1 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 rounded text-xs">결함 관리</span>
+                            </div>
+                        </div>
+                        
+                        <!-- 추가 프로젝트가 발생하면 여기에 위 div 구조를 복사하세요 -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Highlight Section -->
+        <section id="highlight" class="py-20 bg-blue-600 dark:bg-blue-900 text-white relative overflow-hidden">
+            <div class="absolute inset-0 bg-black opacity-10 dark:opacity-40"></div>
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 fade-in-section">
+                <div class="flex items-center gap-3 mb-10">
+                    <div class="h-8 w-1 bg-white rounded"></div>
+                    <h2 class="text-3xl font-bold">Highlight</h2>
+                </div>
+                
+                <div class="bg-white/10 dark:bg-black/20 backdrop-blur-sm p-8 md:p-12 rounded-2xl border border-white/20">
+                    <div class="text-blue-200 font-medium tracking-widest text-sm mb-2 uppercase flex items-center">
+                        <i class="fa-solid fa-bolt mr-2"></i> Performance Boost
+                    </div>
+                    <h3 class="text-3xl md:text-4xl font-bold mb-6">효율을 고민합니다.</h3>
+                    
+                    <div class="bg-blue-700/50 dark:bg-blue-800/50 rounded-lg p-6 mb-8 border border-blue-500/30">
+                        <p class="text-xl font-semibold leading-relaxed">
+                            "반복적인 수동 데이터 세팅 자동화로 <br class="hidden md:block"/>검수 기간 전체 30% 단축"
+                        </p>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+                        <div>
+                            <h4 class="text-blue-300 font-bold mb-3 flex items-center gap-2 text-lg"><i class="fa-solid fa-circle-exclamation"></i> 배경 및 문제</h4>
+                            <p class="text-blue-50 leading-relaxed font-light">
+                                검증 과정에서 주문, 대여, 상환 등 반복적인 데이터 세팅이 필요했습니다. 매번 수동으로 데이터를 구축하는 과정은 검수 기간 전체의 30% 이상을 소모하는 병목 구간이었고, 짧은 기간 내에 정확한 검수 완료를 위해 개선이 필요했습니다.
+                            </p>
+                        </div>
+                        <div>
+                            <h4 class="text-blue-300 font-bold mb-3 flex items-center gap-2 text-lg"><i class="fa-solid fa-lightbulb"></i> 해결 및 성과</h4>
+                            <p class="text-blue-50 leading-relaxed font-light mb-4">
+                                API 호출 패턴을 분석해 세팅을 자동화(자동 호가 쌓기, 대여 기간 일괄 변경, 일괄 상환 등)함으로써 케이스 건당 검수 소요 시간을 5분에서 2분 이내로 단축했습니다.
+                            </p>
+                            <div class="inline-block px-4 py-2 bg-white/10 rounded font-medium text-white">
+                                <i class="fa-solid fa-check text-green-300 mr-2"></i> 예외 케이스 중심의 심층 테스트 시간 확보
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex flex-wrap gap-2 pt-6 border-t border-white/10">
+                        <span class="px-3 py-1.5 bg-white/10 hover:bg-white/20 transition-colors rounded-full text-sm font-medium"># API 자동화</span>
+                        <span class="px-3 py-1.5 bg-white/10 hover:bg-white/20 transition-colors rounded-full text-sm font-medium"># 거래소 정보 조회/수정</span>
+                        <span class="px-3 py-1.5 bg-white/10 hover:bg-white/20 transition-colors rounded-full text-sm font-medium"># WebSocket 프로그램</span>
+                        <span class="px-3 py-1.5 bg-white/10 hover:bg-white/20 transition-colors rounded-full text-sm font-medium"># 검수 효율화</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Growth Section -->
+        <section id="growth" class="py-20 bg-slate-50 dark:bg-slate-900">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 fade-in-section">
+                <div class="flex items-center gap-3 mb-10">
+                    <div class="h-8 w-1 bg-blue-600 dark:bg-blue-500 rounded"></div>
+                    <h2 class="text-3xl font-bold text-slate-900 dark:text-white">Growth</h2>
+                </div>
+                
+                <p class="text-slate-600 dark:text-slate-300 mb-10 max-w-3xl leading-relaxed text-lg">
+                    <strong>파이썬 기반 테스트 자동화 학습</strong><br/>
+                    반복적인 수동 업무를 줄이고 검증 효율을 높이기 위해, 기초 테스트 설계부터 자동화 환경 구축까지 단계별로 학습을 진행하고 있습니다.
+                </p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 relative">
+                    
+                    <!-- Item 1 -->
+                    <div class="bg-white dark:bg-slate-800 p-6 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                        <div class="flex justify-between items-start mb-4">
+                            <h4 class="text-lg font-bold text-slate-800 dark:text-white">파이썬 기초 및 테스트 설계</h4>
+                            <span class="px-2 py-1 text-xs font-bold rounded bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400">완료</span>
+                        </div>
+                        <p class="text-sm text-slate-600 dark:text-slate-300">파이썬 코드 작성법을 익히고, 요구사항에 맞춰 빈틈없이 테스트 케이스를 설계하는 기본기를 다졌습니다.</p>
+                    </div>
+
+                    <!-- Item 2 -->
+                    <div class="bg-white dark:bg-slate-800 p-6 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                        <div class="flex justify-between items-start mb-4">
+                            <h4 class="text-lg font-bold text-slate-800 dark:text-white">API 및 데이터 검증 자동화</h4>
+                            <span class="px-2 py-1 text-xs font-bold rounded bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400">학습 중</span>
+                        </div>
+                        <p class="text-sm text-slate-600 dark:text-slate-300">서비스의 뼈대가 되는 백엔드 API 동작과 데이터 상태를 코드로 자동 검증하는 방법을 배우고 있습니다.</p>
+                    </div>
+
+                    <!-- Item 3 -->
+                    <div class="bg-white dark:bg-slate-800 p-6 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                        <div class="flex justify-between items-start mb-4">
+                            <h4 class="text-lg font-bold text-slate-800 dark:text-white">웹 화면(UI) 테스트 자동화</h4>
+                            <span class="px-2 py-1 text-xs font-bold rounded bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400">학습 중</span>
+                        </div>
+                        <p class="text-sm text-slate-600 dark:text-slate-300">사용자가 실제 웹 화면을 조작하는 과정을 코드로 구현하여, 화면 테스트 영역을 자동화할 계획입니다.</p>
+                    </div>
+
+                    <!-- Item 4 -->
+                    <div class="bg-white dark:bg-slate-800 p-6 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                        <div class="flex justify-between items-start mb-4">
+                            <h4 class="text-lg font-bold text-slate-800 dark:text-white">테스트 자동 실행 환경 구축</h4>
+                            <span class="px-2 py-1 text-xs font-bold rounded bg-slate-100 text-slate-600 dark:bg-slate-700 dark:text-slate-300">학습 예정</span>
+                        </div>
+                        <p class="text-sm text-slate-600 dark:text-slate-300">코드가 바뀔 때마다 자동으로 테스트가 실행되고 결과를 알려주는 환경(CI/CD)을 구축해 볼 예정입니다.</p>
+                    </div>
+
+                </div>
+
+                <!-- 목표 명시 (이 부분의 텍스트 색상 수정됨) -->
+                <div class="mt-12 p-6 bg-blue-50 dark:bg-blue-900/20 rounded-xl border border-blue-100 dark:border-blue-800/50">
+                    <h4 class="text-xl font-bold text-blue-800 dark:text-blue-300 mb-3 flex items-center gap-2">
+                        <i class="fa-solid fa-bullseye"></i> 목표
+                    </h4>
+                    <p class="text-blue-800 dark:text-blue-200 leading-relaxed font-medium">
+                        학습한 기술을 바탕으로 단순 반복 테스트를 점진적으로 자동화하여, 서비스의 잠재적 결함을 찾는 데 더 집중할 수 있는 효율적인 품질 환경을 만들겠습니다.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Vision Section -->
+        <section id="vision" class="py-24 bg-white dark:bg-slate-800/50 text-center">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 fade-in-section">
+                <div class="w-16 h-16 rounded-full bg-blue-50 dark:bg-slate-800 text-blue-600 dark:text-blue-400 border border-blue-100 dark:border-slate-700 flex items-center justify-center mx-auto mb-8 text-2xl">
+                    <i class="fa-solid fa-quote-left"></i>
+                </div>
+                <h2 class="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white mb-10 leading-snug">
+                    "꼼꼼한 시선으로 문제를 찾고,<br class="hidden md:block"/> 엔지니어링으로 효율을 만드는 QA 엔지니어 노다솔 입니다."
+                </h2>
+                
+                <div class="text-left text-slate-700 dark:text-slate-300 max-w-3xl mx-auto p-8 bg-slate-50 dark:bg-slate-900/50 rounded-2xl border border-slate-100 dark:border-slate-700/50 space-y-6">
+                    <p class="leading-relaxed">
+                        여러 해의 품질 검증 경험을 통해, '품질은 마지막에 확인하는 것이 아니라 설계 단계부터 함께 만들어가는 것'임을 배웠습니다. 수동 테스트의 한계를 경험한 후, 스스로 API 구조를 파악하고 스크립트를 적용해 검수 기간을 30% 단축하면서 효율적인 테스트 체계가 프로젝트 전체에 미치는 긍정적인 영향력을 체감했습니다.
+                    </p>
+                    <p class="leading-relaxed">
+                        특히 주어진 환경에 안주하지 않고, 문제를 해결하기 위해 필요한 기술이라면 적극적으로 학습해 실무에 적용하는 것을 중요하게 생각합니다. 현재 진행 중인 테스트 자동화 로드맵 학습 역시 이러한 의지의 연장선이며, 늘 부족한 부분을 스스로 채워가며 진화하는 엔지니어가 되기 위해 노력하고 있습니다.
+                    </p>
+                    <p class="leading-relaxed font-medium text-slate-800 dark:text-slate-200">
+                        단순히 기계적으로 오류를 찾아내는 것을 넘어, 반복 업무는 자동화로 해결하고 QA는 더 깊이 있는 예외 상황 분석과 탐색적 테스트에 집중하는 환경을 지향합니다. 앞으로 제가 함께할 조직에서는 품질의 병목을 찾아 선제적으로 개선하고, 개발팀과 긴밀하게 협업하며 데이터와 코드를 기반으로 효율적이고 신뢰할 수 있는 품질 문화를 만들어가겠습니다.
+                    </p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Footer -->
+        <footer class="bg-slate-900 text-slate-400 py-16 text-center border-t border-slate-800 dark:border-slate-950">
+            <div class="max-w-4xl mx-auto px-4 fade-in-section">
+                <h2 class="text-4xl md:text-6xl font-black text-white/90 tracking-tighter mb-8">감사합니다.</h2>
+                <p class="font-medium text-white mb-2 text-lg">검토해 주셔서 감사합니다.</p>
+                <p class="mb-8">QA 엔지니어 노다솔이었습니다.</p>
+                <div class="flex items-center justify-center gap-6 text-sm">
+                    <a href="mailto:ds.no.qa@gmail.com" class="hover:text-white transition-colors">ds.no.qa@gmail.com</a>
+                    <span>+82 10-9798-0330</span>
+                </div>
+                <p class="text-xs mt-12 text-slate-600">© 2024 Portfolio. All rights reserved.</p>
+            </div>
+        </footer>
+    </main>
+
+    <!-- 숨겨진 PDF 인쇄 버튼 (이스터에그 발동 시 나타남) -->
+    <button id="pdf-btn" onclick="printPDF()" class="hidden fixed bottom-8 right-8 bg-blue-600 hover:bg-blue-700 text-white p-4 rounded-full shadow-lg shadow-blue-600/30 transition-transform transform hover:scale-105 z-50 items-center justify-center group no-print">
+        <i class="fa-solid fa-print text-xl"></i>
+        <span class="max-w-0 overflow-hidden whitespace-nowrap opacity-0 group-hover:max-w-xs group-hover:opacity-100 group-hover:ml-3 transition-all duration-300 ease-in-out font-medium">
+            이력서 인쇄
+        </span>
+    </button>
+
+    <script>
+        // --- 스크롤 애니메이션 옵저버 ---
+        function setupIntersectionObserver() {
+            const options = { root: null, rootMargin: '0px', threshold: 0.15 };
+            const observer = new IntersectionObserver((entries, obs) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        obs.unobserve(entry.target);
+                    }
+                });
+            }, options);
+
+            document.querySelectorAll('.fade-in-section').forEach(section => {
+                observer.observe(section);
+            });
+        }
+
+        // --- 다크 모드 토글 로직 ---
+        function toggleDarkMode() {
+            const html = document.documentElement;
+            html.classList.toggle('dark');
+        }
+
+        // --- 이스터에그 (로고 연속 5번 클릭) ---
+        let clickCount = 0;
+        let clickTimer = null;
+        
+        function handleEasterEgg() {
+            clickCount++;
+            
+            if (clickTimer) clearTimeout(clickTimer);
+            
+            // 5번 클릭 성공 시 버튼 표시
+            if (clickCount >= 5) {
+                const pdfBtn = document.getElementById('pdf-btn');
+                pdfBtn.classList.remove('hidden');
+                pdfBtn.classList.add('flex'); // hidden 해제 후 flex 적용
+                clickCount = 0; // 초기화
+            } else {
+                // 1초 안에 다음 클릭이 없으면 카운트 초기화
+                clickTimer = setTimeout(() => {
+                    clickCount = 0;
+                }, 1000);
+            }
+        }
+
+        // --- PDF 출력 (인쇄 다이얼로그 호출) ---
+        function printPDF() {
+            // 브라우저 기본 인쇄 기능 호출 (CSS의 @media print 설정에 따라 포맷팅됨)
+            window.print();
+        }
+
+        // --- 초기화 ---
+        window.onload = () => {
+            setupIntersectionObserver();
+        };
+    </script>
+</body>
+</html>
